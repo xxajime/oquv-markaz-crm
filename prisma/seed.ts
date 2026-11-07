@@ -173,7 +173,7 @@ async function main() {
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
   console.log("🔐 Super Admin login ma'lumotlari:");
   console.log("   Username: admin");
-  console.log("   Parol:    Admin123!@#");
+  console.log("   Parol:    yuqorida chop etildi (yoki SEED_ADMIN_PASSWORD)");
   console.log("⚠️  BIRINCHI KIRISHDA PAROLNI O'ZGARTIRING!");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 }
