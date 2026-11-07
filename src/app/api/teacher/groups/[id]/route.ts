@@ -1,0 +1,39 @@
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { getTeacherGroupIds } from "@/lib/teacher";
+import { withApiErrors } from "@/lib/api-handler";
+
+async function GETHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const session = await auth();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { id } = await params;
+
+  const isAdminRole = session.user.role === "SUPER_ADMIN" || session.user.role === "ADMIN";
+  if (!isAdminRole) {
+    const groupIds = await getTeacherGroupIds(session.user.id);
+    if (!groupIds.includes(id)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const group = await db.group.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      room: true,
+      days: true,
+      timeFrom: true,
+      timeTo: true,
+      course: { select: { id: true, name: true, color: true } },
+      leads: {
+        where: { isArchived: false },
+        select: { id: true, fullName: true, phone: true, coins: true },
+        orderBy: { fullName: "asc" },
+      },
+    },
+  });
+  if (!group) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  return NextResponse.json(group);
+}
+
+export const GET = withApiErrors(GETHandler, "GET /api/teacher/groups/[id]");

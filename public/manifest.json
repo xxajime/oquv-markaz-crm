@@ -1,0 +1,16 @@
+{
+  "name": "O'quv Markaz CRM",
+  "short_name": "O'quv CRM",
+  "description": "O'quv markazlar uchun ochiq kodli boshqaruv tizimi (CRM)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
